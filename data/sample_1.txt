@@ -1,0 +1,2 @@
+Agentic RAG combines retrieval with tool-use and planning.
+Key ideas: retrieval, grounding, tool selection, iterative refinement, and citations.
