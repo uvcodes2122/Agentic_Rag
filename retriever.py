@@ -6,7 +6,10 @@ from dataclasses import dataclass
 from typing import List, Tuple
 # from sentence_transformers import SentenceTransformer
 # embedder = SentenceTransformer("all-MiniLM-L6-v2")
-from langchain_community.embeddings import HuggingFaceEmbeddings
+# from langchain_community.embeddings import HuggingFaceEmbeddings
+from langchain_huggingface import HuggingFaceEmbeddings
+
+
 
 # embedder = HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM-L6-v2")
 
@@ -62,9 +65,11 @@ def split_docs(docs: List[Document]) -> List[Document]:
 
 @dataclass
 class RetrieverBundle:
-    vs: FAISS
-    # embedder: SentenceTransformer
-    reranker: CrossEncoder
+    def __init__(self, vs, reranker=None):
+        self.vs = vs
+        self.reranker = reranker
+    
+    
 
 def build_or_load_faiss(index_path: str = None, data_dir: str = "data") -> RetrieverBundle:
     embedder = HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM-L6-v2")
@@ -78,7 +83,8 @@ def build_or_load_faiss(index_path: str = None, data_dir: str = "data") -> Retri
 
     metadatas = [c.metadata for c in chunks]
     vs = FAISS.from_texts(texts, embedding=embedder, metadatas=metadatas)
-    return RetrieverBundle(vs=vs, embedder=embedder, reranker=reranker)
+    # return RetrieverBundle(vs=vs, embedder=embedder, reranker=reranker)
+    return RetrieverBundle(vs=vs,reranker=None)
 
 def retrieve(bundle: RetrieverBundle, query: str, top_k: int = 6, rerank_k: int = 8) -> List[Tuple[str, str]]:
     # Initial dense retrieval
