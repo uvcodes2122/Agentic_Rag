@@ -1,1 +1,3 @@
 Python is a popular programming language for AI and backend development.
+
+ML, or Machine Learning, is a subset of Artificial Intelligence (AI) that allows computer systems to learn from data and improve over time without being explicitly programmed. 
